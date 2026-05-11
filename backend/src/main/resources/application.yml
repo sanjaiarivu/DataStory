@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: datastory-ai-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/datastory_ai}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 80MB
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  storage:
+    upload-dir: ${UPLOAD_DIR:uploads}
+  jwt:
+    secret: ${JWT_SECRET:change-this-development-secret-key-to-at-least-32-characters}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
+
+openai:
+  api-key: ${OPENAI_API_KEY:}
+  chat-model: ${OPENAI_CHAT_MODEL:gpt-4.1-mini}
+  embedding-model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}

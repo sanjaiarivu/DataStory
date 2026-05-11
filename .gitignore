@@ -1,0 +1,27 @@
+# Java
+target/
+*.class
+
+# Node
+node_modules/
+dist/
+.vite/
+.npm-cache/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Uploads
+uploads/
+backend/uploads/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
