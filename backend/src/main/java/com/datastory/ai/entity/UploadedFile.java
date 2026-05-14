@@ -13,17 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "uploaded_files")
 public class UploadedFile {
@@ -63,5 +53,102 @@ public class UploadedFile {
         if (uploadedAt == null) {
             uploadedAt = LocalDateTime.now();
         }
+    }
+
+    public UploadedFile() {
+    }
+
+    public UploadedFile(
+            Long id,
+            String originalFileName,
+            String storedFileName,
+            String storagePath,
+            String contentType,
+            Long sizeInBytes,
+            UploadedFileType fileType,
+            LocalDateTime uploadedAt,
+            AppUser uploadedBy
+    ) {
+        this.id = id;
+        this.originalFileName = originalFileName;
+        this.storedFileName = storedFileName;
+        this.storagePath = storagePath;
+        this.contentType = contentType;
+        this.sizeInBytes = sizeInBytes;
+        this.fileType = fileType;
+        this.uploadedAt = uploadedAt;
+        this.uploadedBy = uploadedBy;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getStoredFileName() {
+        return storedFileName;
+    }
+
+    public void setStoredFileName(String storedFileName) {
+        this.storedFileName = storedFileName;
+    }
+
+    public String getStoragePath() {
+        return storagePath;
+    }
+
+    public void setStoragePath(String storagePath) {
+        this.storagePath = storagePath;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Long getSizeInBytes() {
+        return sizeInBytes;
+    }
+
+    public void setSizeInBytes(Long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
+    }
+
+    public UploadedFileType getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(UploadedFileType fileType) {
+        this.fileType = fileType;
+    }
+
+    public LocalDateTime getUploadedAt() {
+        return uploadedAt;
+    }
+
+    public void setUploadedAt(LocalDateTime uploadedAt) {
+        this.uploadedAt = uploadedAt;
+    }
+
+    public AppUser getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public void setUploadedBy(AppUser uploadedBy) {
+        this.uploadedBy = uploadedBy;
     }
 }

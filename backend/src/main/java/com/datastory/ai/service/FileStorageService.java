@@ -16,14 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@RequiredArgsConstructor
 public class FileStorageService {
 
     private static final List<String> ALLOWED_CONTENT_TYPES = List.of(
@@ -34,6 +32,11 @@ public class FileStorageService {
 
     private final UploadedFileRepository uploadedFileRepository;
     private final AppUserRepository appUserRepository;
+
+    public FileStorageService(UploadedFileRepository uploadedFileRepository, AppUserRepository appUserRepository) {
+        this.uploadedFileRepository = uploadedFileRepository;
+        this.appUserRepository = appUserRepository;
+    }
 
     @Value("${app.storage.upload-dir}")
     private String uploadDir;
@@ -74,15 +77,14 @@ public class FileStorageService {
             Files.createDirectories(uploadPath);
             Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-            UploadedFile uploadedFile = UploadedFile.builder()
-                    .originalFileName(originalFileName)
-                    .storedFileName(storedFileName)
-                    .storagePath(targetPath.toString())
-                    .contentType(file.getContentType())
-                    .sizeInBytes(file.getSize())
-                    .fileType(fileType)
-                    .uploadedBy(getCurrentUser())
-                    .build();
+            UploadedFile uploadedFile = new UploadedFile();
+            uploadedFile.setOriginalFileName(originalFileName);
+            uploadedFile.setStoredFileName(storedFileName);
+            uploadedFile.setStoragePath(targetPath.toString());
+            uploadedFile.setContentType(file.getContentType());
+            uploadedFile.setSizeInBytes(file.getSize());
+            uploadedFile.setFileType(fileType);
+            uploadedFile.setUploadedBy(getCurrentUser());
 
             return uploadedFileRepository.save(uploadedFile);
         } catch (IOException exception) {
