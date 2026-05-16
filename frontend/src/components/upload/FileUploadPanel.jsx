@@ -16,7 +16,7 @@ const getIcon = (fileName) => {
   return FileSpreadsheet;
 };
 
-export default function FileUploadPanel() {
+export default function FileUploadPanel({ onUploadComplete }) {
   const inputRef = useRef(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState('');
@@ -58,6 +58,7 @@ export default function FileUploadPanel() {
       const response = await uploadFiles(selectedFiles);
       setUploadedFiles(response.files || []);
       setSelectedFiles([]);
+      onUploadComplete?.(response.files || []);
     } catch (uploadError) {
       setError(uploadError.response?.data?.message || 'Upload failed. Check if the backend is running.');
     } finally {

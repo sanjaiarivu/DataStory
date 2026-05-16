@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import AuthPage from '../pages/AuthPage';
 import DashboardPage from '../pages/DashboardPage';
+import FilesPage from '../pages/FilesPage';
 
 export default function AppRoutes() {
   return (
@@ -11,6 +12,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/files"
+        element={
+          <ProtectedRoute>
+            <FilesPage />
           </ProtectedRoute>
         }
       />

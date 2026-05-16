@@ -1,11 +1,13 @@
 package com.datastory.ai.service;
 
 import com.datastory.ai.dto.FileUploadResponse;
+import com.datastory.ai.dto.FileDeleteResponse;
 import com.datastory.ai.dto.UploadedFileResponse;
 import com.datastory.ai.entity.AppUser;
 import com.datastory.ai.entity.UploadedFile;
 import com.datastory.ai.entity.UploadedFileType;
 import com.datastory.ai.exception.InvalidFileException;
+import com.datastory.ai.exception.ResourceNotFoundException;
 import com.datastory.ai.repository.AppUserRepository;
 import com.datastory.ai.repository.UploadedFileRepository;
 import java.io.IOException;
@@ -52,6 +54,38 @@ public class FileStorageService {
                 .toList();
 
         return new FileUploadResponse("Files uploaded successfully.", uploadedFiles);
+    }
+
+    public List<UploadedFileResponse> getCurrentUserFiles() {
+        AppUser currentUser = getCurrentUser();
+
+        return uploadedFileRepository.findByUploadedByEmailOrderByUploadedAtDesc(currentUser.getEmail())
+                .stream()
+                .map(uploadedFile -> toResponse(uploadedFile, currentUser.getEmail()))
+                .toList();
+    }
+
+    public UploadedFileResponse getCurrentUserFile(Long fileId) {
+        AppUser currentUser = getCurrentUser();
+
+        return uploadedFileRepository.findByIdAndUploadedByEmail(fileId, currentUser.getEmail())
+                .map(uploadedFile -> toResponse(uploadedFile, currentUser.getEmail()))
+                .orElseThrow(() -> new ResourceNotFoundException("File was not found."));
+    }
+
+    public FileDeleteResponse deleteCurrentUserFile(Long fileId) {
+        AppUser currentUser = getCurrentUser();
+        UploadedFile uploadedFile = uploadedFileRepository.findByIdAndUploadedByEmail(fileId, currentUser.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("File was not found."));
+
+        try {
+            Files.deleteIfExists(Path.of(uploadedFile.getStoragePath()));
+        } catch (IOException exception) {
+            throw new InvalidFileException("Could not delete stored file.");
+        }
+
+        uploadedFileRepository.delete(uploadedFile);
+        return new FileDeleteResponse(fileId, "File deleted successfully.");
     }
 
     private UploadedFile validateAndSaveMetadata(MultipartFile file) {
@@ -102,6 +136,11 @@ public class FileStorageService {
     }
 
     private UploadedFileResponse toResponse(UploadedFile uploadedFile) {
+        String uploadedByEmail = uploadedFile.getUploadedBy() != null ? uploadedFile.getUploadedBy().getEmail() : null;
+        return toResponse(uploadedFile, uploadedByEmail);
+    }
+
+    private UploadedFileResponse toResponse(UploadedFile uploadedFile, String uploadedByEmail) {
         return new UploadedFileResponse(
                 uploadedFile.getId(),
                 uploadedFile.getOriginalFileName(),
@@ -110,7 +149,7 @@ public class FileStorageService {
                 uploadedFile.getSizeInBytes(),
                 uploadedFile.getFileType(),
                 uploadedFile.getUploadedAt(),
-                uploadedFile.getUploadedBy() != null ? uploadedFile.getUploadedBy().getEmail() : null
+                uploadedByEmail
         );
     }
 
