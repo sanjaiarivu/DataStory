@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Area,
   AreaChart,
@@ -19,9 +20,55 @@ const revenueData = [
   { month: 'Jun', revenue: 84000, users: 570 }
 ];
 
+// Typing animation component
+function TypingAnimation({ text, delay = 0 }) {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    let index = 0;
+    let timer;
+
+    // Wait for delay before starting
+    const delayTimer = setTimeout(() => {
+      const type = () => {
+        if (index < text.length) {
+          setDisplayedText(text.slice(0, index + 1));
+          index++;
+          timer = setTimeout(type, 100); // 100ms per character
+        } else {
+          setIsComplete(true);
+        }
+      };
+      type();
+    }, delay);
+
+    return () => {
+      clearTimeout(delayTimer);
+      clearTimeout(timer);
+    };
+  }, [text, delay]);
+
+  return (
+    <>
+      {displayedText}
+      <span className="animate-pulse">|</span>
+    </>
+  );
+}
+
 export default function DashboardChart() {
   return (
-    <section className="grid gap-5 xl:grid-cols-[1.4fr_1fr]">
+    <>
+      {/* Typing Animation Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-slate-950 dark:text-white">
+          <TypingAnimation text="Turn raw files into explainable stories!" delay={200} />
+        </h1>
+      </div>
+
+      {/* Charts Section */}
+      <section className="grid gap-5 xl:grid-cols-[1.4fr_1fr]">
       <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="mb-5 flex items-center justify-between gap-4">
           <div>
@@ -74,5 +121,6 @@ export default function DashboardChart() {
         </div>
       </div>
     </section>
+    </>
   );
 }
