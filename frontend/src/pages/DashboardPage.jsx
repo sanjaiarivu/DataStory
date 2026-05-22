@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 import AppShell from '../components/layout/AppShell';
 
-// Grain texture overlay component
+
 function GrainOverlay() {
   return (
     <div
@@ -19,7 +19,6 @@ function GrainOverlay() {
   );
 }
 
-// Custom hook for magnetic button effect
 function useMagneticButton() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const ref = useRef(null);

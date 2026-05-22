@@ -67,14 +67,14 @@ export default function FileUploadPanel({ onUploadComplete }) {
   };
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <section className="rounded-lg border border-slate-700 bg-slate-900 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-base font-semibold text-slate-950 dark:text-white">Upload Data</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Add CSV, Excel, or PDF files for analysis.</p>
+          <h2 className="text-base font-semibold text-white dark:text-white">Upload Data</h2>
+          <p className="text-sm text-slate-400 dark:text-slate-400">Add CSV, Excel, or PDF files for analysis.</p>
         </div>
         <button
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400"
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-600"
           disabled={isUploading}
           onClick={handleUpload}
           type="button"
@@ -85,17 +85,17 @@ export default function FileUploadPanel({ onUploadComplete }) {
       </div>
 
       <button
-        className="mt-5 flex min-h-44 w-full flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center transition hover:border-emerald-500 hover:bg-emerald-50 dark:border-slate-700 dark:bg-slate-950 dark:hover:border-emerald-500 dark:hover:bg-emerald-950"
+        className="mt-5 flex min-h-44 w-full flex-col items-center justify-center rounded-lg border border-dashed border-slate-700 bg-slate-800 px-4 py-8 text-center transition hover:border-emerald-500 hover:bg-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-emerald-500 dark:hover:bg-slate-700"
         onClick={() => inputRef.current?.click()}
         onDragOver={(event) => event.preventDefault()}
         onDrop={handleDrop}
         type="button"
       >
-        <UploadCloud className="text-emerald-600 dark:text-emerald-300" size={32} aria-hidden="true" />
-        <span className="mt-3 text-sm font-semibold text-slate-800 dark:text-slate-100">
+        <UploadCloud className="text-emerald-400 dark:text-emerald-300" size={32} aria-hidden="true" />
+        <span className="mt-3 text-sm font-semibold text-slate-200 dark:text-slate-100">
           Drop files here or browse from your computer
         </span>
-        <span className="mt-1 text-xs text-slate-500 dark:text-slate-400">CSV, XLSX, PDF up to backend limits</span>
+        <span className="mt-1 text-xs text-slate-400 dark:text-slate-400">CSV, XLSX, PDF up to backend limits</span>
       </button>
 
       <input
@@ -107,7 +107,7 @@ export default function FileUploadPanel({ onUploadComplete }) {
         type="file"
       />
 
-      {error ? <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p> : null}
+      {error ? <p className="mt-4 rounded-md bg-red-900 px-3 py-2 text-sm text-red-300">{error}</p> : null}
 
       {selectedFiles.length > 0 ? (
         <div className="mt-5 space-y-2">
@@ -116,16 +116,16 @@ export default function FileUploadPanel({ onUploadComplete }) {
 
             return (
               <div
-                className="flex items-center justify-between gap-3 rounded-md border border-slate-200 px-3 py-2 dark:border-slate-800"
+                className="flex items-center justify-between gap-3 rounded-md border border-slate-700 bg-slate-800 px-3 py-2 dark:border-slate-700 dark:bg-slate-800"
                 key={`${file.name}-${file.lastModified}`}
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <Icon className="shrink-0 text-slate-500" size={18} aria-hidden="true" />
-                  <span className="truncate text-sm font-medium text-slate-700 dark:text-slate-200">{file.name}</span>
+                  <Icon className="shrink-0 text-slate-400" size={18} aria-hidden="true" />
+                  <span className="truncate text-sm font-medium text-slate-200 dark:text-slate-200">{file.name}</span>
                 </div>
                 <button
                   aria-label={`Remove ${file.name}`}
-                  className="grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="grid h-8 w-8 place-items-center rounded-md text-slate-400 hover:bg-red-900 hover:text-red-300 dark:hover:bg-red-900"
                   onClick={() => removeFile(file.name)}
                   type="button"
                 >
@@ -138,9 +138,9 @@ export default function FileUploadPanel({ onUploadComplete }) {
       ) : null}
 
       {uploadedFiles.length > 0 ? (
-        <div className="mt-5 rounded-md bg-emerald-50 px-3 py-3 dark:bg-emerald-950">
-          <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Uploaded files</p>
-          <ul className="mt-2 space-y-1 text-sm text-emerald-700 dark:text-emerald-300">
+        <div className="mt-5 rounded-md bg-emerald-900 px-3 py-3 dark:bg-emerald-900">
+          <p className="text-sm font-semibold text-emerald-300 dark:text-emerald-300">Uploaded files</p>
+          <ul className="mt-2 space-y-1 text-sm text-emerald-300 dark:text-emerald-300">
             {uploadedFiles.map((file) => (
               <li key={file.id}>{file.originalFileName}</li>
             ))}
